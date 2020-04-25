@@ -1,5 +1,6 @@
 // ===============================================================================
 // DEPENDENCIES
+const router = require("express").Router();
 const fs = require("fs");
 const db = require("../db/db.json");
 // package to give note unique user id
@@ -11,12 +12,11 @@ const uuid = require("uuid/v4");
 // ROUTING
 // ===============================================================================
 
-module.exports = function (app) {
-  app.get("/api/notes", function (req, res) {
+  router.get("/api/notes", function (req, res) {
     res.send(db);
   });
 
-  app.post("/api/notes", function (req, res) {
+  router.post("/api/notes", function (req, res) {
     // uuid called to generate random id
     const noteID = uuid();
     // object array for new note
@@ -41,7 +41,7 @@ module.exports = function (app) {
     });
   });
   // delete note function
-  app.delete("/api/notes/:id", (req, res) => {
+  router.delete("/api/notes/:id", (req, res) => {
     let noteId = req.params.id;
     // reads data in JSON file
     fs.readFile("./db/db.json", "utf8", (err, data) => {
@@ -61,4 +61,4 @@ module.exports = function (app) {
       );
     });
   });
-};
+  module.exports = router;
