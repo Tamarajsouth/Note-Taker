@@ -12,8 +12,11 @@ const uuid = require("uuid/v4");
 // ROUTING
 // ===============================================================================
 
-  router.get("/api/notes", function (req, res) {
-    res.send(db);
+  router.get("/notes", function (req, res) {
+    // res.send(db);
+    fs.readFile("./db/db.json", "utf8", err => { 
+      if (err) throw err;
+    })
   });
   // POST
   router.post("/notes", function (req, res) {
@@ -35,30 +38,31 @@ const uuid = require("uuid/v4");
       // adding new data and pushing that data into new note created
       fs.writeFile("./db/db.json", JSON.stringify(allNotes), (err) => {
         if (err) throw err;
-        res.send(db);
         console.log("Note created!");
+        res.send(db);
       });
     });
   });
   // delete note function
-  router.delete("/api/notes/:id", (req, res) => {
+  router.delete("/notes/:id", (req, res) => {
     let noteId = req.params.id;
     // reads data in JSON file
     fs.readFile("./db/db.json", "utf8", (err, data) => {
       if (err) throw err;
       console.log(data);
       const allNotes = JSON.parse(data);
-      const newAllNotes = allNotes.filter(note);
+      const newAllNotes = allNotes.ffilter(notes => notes.id !== noteId);
 
       fs.writeFile(
         "./db/db.json",
         JSON.stringify(newAllNotes),
         (err) => {
           if (err) throw err;
-          res.send(db);
           console.log("Note deleted!");
+          res.send(db);
         }
       );
     });
   });
-  module.exports = router;
+
+module.exports = router;
