@@ -15,10 +15,10 @@ const uuid = require("uuid/v4");
   router.get("/api/notes", function (req, res) {
     res.send(db);
   });
-
-  router.post("/api/notes", function (req, res) {
+  // POST
+  router.post("/notes", function (req, res) {
     // uuid called to generate random id
-    const noteID = uuid();
+    const noteId = uuid();
     // object array for new note
     let newNote = {
       id: noteId,
@@ -33,7 +33,7 @@ const uuid = require("uuid/v4");
       allNotes.push(newNote);
 
       // adding new data and pushing that data into new note created
-      fs.writeFile("./db/db.json", JSON.stringify(allNotes, null, 2), (err) => {
+      fs.writeFile("./db/db.json", JSON.stringify(allNotes), (err) => {
         if (err) throw err;
         res.send(db);
         console.log("Note created!");
